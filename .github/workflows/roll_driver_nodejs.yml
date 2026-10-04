@@ -7,7 +7,7 @@ on:
 jobs:
   trigger-nodejs-roll:
     name: Trigger Roll
-    runs-on: ubuntu-22.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     if: github.repository == 'microsoft/playwright'
     permissions:
       contents: write

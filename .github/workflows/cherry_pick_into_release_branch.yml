@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   roll:
-    runs-on: ubuntu-22.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     steps:
     - name: Validate input version number
       run: |

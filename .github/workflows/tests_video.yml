@@ -23,7 +23,7 @@ jobs:
     permissions:
       id-token: write   # This is required for OIDC login (azure/login) to succeed
       contents: read    # This is required for actions/checkout to succeed
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ fromJSON(matrix.os == 'ubuntu-22.04' && '["self-hosted","Linux","X64"]' || matrix.os == 'ubuntu-24.04' && '["self-hosted","Linux","X64"]' || '["self-hosted","unmapped-runner"]') }}
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/run-test

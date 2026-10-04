@@ -7,7 +7,7 @@ on:
 jobs:
   publish-trace-viewer:
     name: "publish Trace Viewer to trace.playwright.dev"
-    runs-on: ubuntu-24.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     if: github.repository == 'microsoft/playwright'
     steps:
     - uses: actions/checkout@v4

@@ -32,7 +32,7 @@ jobs:
       matrix:
         browser: [chromium, firefox, webkit]
         os: [ubuntu-24.04]
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ fromJSON(matrix.os == 'ubuntu-24.04' && '["self-hosted","Linux","X64"]' || '["self-hosted","unmapped-runner"]') }}
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/run-test
@@ -59,7 +59,7 @@ jobs:
             browser: webkit
           - os: macos-15-xlarge
             browser: webkit
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ fromJSON(matrix.os == 'macos-13-large' && '["self-hosted","macOS","X64"]' || matrix.os == 'macos-13-xlarge' && '["self-hosted","macOS","X64"]' || matrix.os == 'macos-14-large' && '["self-hosted","macOS","ARM64"]' || matrix.os == 'macos-14-xlarge' && '["self-hosted","macOS","ARM64"]' || matrix.os == 'macos-15-large' && '["self-hosted","macOS","ARM64"]' || matrix.os == 'macos-15-xlarge' && '["self-hosted","macOS","ARM64"]' || '["self-hosted","unmapped-runner"]') }}
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/run-test
@@ -78,7 +78,7 @@ jobs:
       fail-fast: false
       matrix:
         browser: [chromium, firefox, webkit]
-    runs-on: windows-latest
+    runs-on: ["self-hosted", "Windows", "X64"]
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/run-test
@@ -93,7 +93,7 @@ jobs:
   test-package-installations-other-node-versions:
     name: "Installation Test ${{ matrix.os }} (${{ matrix.node_version }})"
     environment: ${{ github.event_name == 'push' && 'allow-uploading-flakiness-results' || null }}
-    runs-on: ${{ matrix.os  }}
+    runs-on: ${{ fromJSON(matrix.os == 'ubuntu-latest' && '["self-hosted","Linux","X64"]' || '["self-hosted","unmapped-runner"]') }}
     strategy:
       fail-fast: false
       matrix:
@@ -135,7 +135,7 @@ jobs:
           # We have different binaries per Ubuntu version for WebKit.
           - browser: webkit
             os: ubuntu-22.04
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ fromJSON(matrix.os == 'ubuntu-24.04' && '["self-hosted","Linux","X64"]' || matrix.os == 'macos-14-xlarge' && '["self-hosted","macOS","ARM64"]' || matrix.os == 'windows-latest' && '["self-hosted","Windows","X64"]' || matrix.os == 'ubuntu-22.04' && '["self-hosted","Linux","X64"]' || '["self-hosted","unmapped-runner"]') }}
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/run-test
@@ -154,7 +154,7 @@ jobs:
       fail-fast: false
       matrix:
         mode: [driver, service]
-    runs-on: ubuntu-22.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/run-test
@@ -180,7 +180,7 @@ jobs:
           - browser: webkit
           - browser: chromium
             channel: chromium-tip-of-tree
-    runs-on: ubuntu-22.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/run-test
@@ -198,7 +198,7 @@ jobs:
   test_chromium_channels:
     name: Test ${{ matrix.channel }} on ${{ matrix.runs-on }}
     environment: ${{ github.event_name == 'push' && 'allow-uploading-flakiness-results' || null }}
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ${{ fromJSON(matrix.runs-on == 'ubuntu-22.04' && '["self-hosted","Linux","X64"]' || matrix.runs-on == 'macos-latest' && '["self-hosted","macOS","ARM64"]' || matrix.runs-on == 'windows-latest' && '["self-hosted","Windows","X64"]' || '["self-hosted","unmapped-runner"]') }}
     strategy:
       fail-fast: false
       matrix:
@@ -220,7 +220,7 @@ jobs:
   chromium_tot:
     name: Chromium tip-of-tree ${{ matrix.os }}${{ matrix.headed }}
     environment: ${{ github.event_name == 'push' && 'allow-uploading-flakiness-results' || null }}
-    runs-on: ${{ matrix.os  }}
+    runs-on: ${{ fromJSON(matrix.os == 'ubuntu-22.04' && '["self-hosted","Linux","X64"]' || matrix.os == 'macos-13' && '["self-hosted","macOS","X64"]' || matrix.os == 'windows-latest' && '["self-hosted","Windows","X64"]' || '["self-hosted","unmapped-runner"]') }}
     strategy:
       fail-fast: false
       matrix:
@@ -246,7 +246,7 @@ jobs:
   chromium_tot_headless_shell:
     name: Chromium tip-of-tree headless-shell-${{ matrix.os }}
     environment: ${{ github.event_name == 'push' && 'allow-uploading-flakiness-results' || null }}
-    runs-on: ${{ matrix.os  }}
+    runs-on: ${{ fromJSON(matrix.os == 'ubuntu-22.04' && '["self-hosted","Linux","X64"]' || '["self-hosted","unmapped-runner"]') }}
     strategy:
       fail-fast: false
       matrix:
@@ -267,7 +267,7 @@ jobs:
   firefox_beta:
     name: Firefox Beta ${{ matrix.os }}
     environment: ${{ github.event_name == 'push' && 'allow-uploading-flakiness-results' || null }}
-    runs-on: ${{ matrix.os  }}
+    runs-on: ${{ fromJSON(matrix.os == 'ubuntu-22.04' && '["self-hosted","Linux","X64"]' || matrix.os == 'windows-latest' && '["self-hosted","Windows","X64"]' || matrix.os == 'macos-latest' && '["self-hosted","macOS","ARM64"]' || '["self-hosted","unmapped-runner"]') }}
     strategy:
       fail-fast: false
       matrix:
@@ -287,7 +287,7 @@ jobs:
 
   build-playwright-driver:
     name: "build-playwright-driver"
-    runs-on: ubuntu-24.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -304,7 +304,7 @@ jobs:
       fail-fast: false
       matrix:
         runs-on: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.runs-on }}
+    runs-on: ${{ fromJSON(matrix.runs-on == 'ubuntu-latest' && '["self-hosted","Linux","X64"]' || matrix.runs-on == 'windows-latest' && '["self-hosted","Windows","X64"]' || matrix.runs-on == 'macos-latest' && '["self-hosted","macOS","ARM64"]' || '["self-hosted","unmapped-runner"]') }}
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/run-test

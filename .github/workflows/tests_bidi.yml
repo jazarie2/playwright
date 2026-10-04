@@ -25,7 +25,7 @@ jobs:
   test_bidi:
     name: BiDi
     environment: ${{ github.event_name == 'push' && 'allow-uploading-flakiness-results' || null }}
-    runs-on: ubuntu-24.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     permissions:
       id-token: write   # This is required for OIDC login (azure/login) to succeed
       contents: read    # This is required for actions/checkout to succeed
