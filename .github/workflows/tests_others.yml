@@ -25,7 +25,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ fromJSON(matrix.os == 'ubuntu-latest' && '["self-hosted","Linux","X64"]' || matrix.os == 'macos-latest' && '["self-hosted","macOS","ARM64"]' || matrix.os == 'windows-latest' && '["self-hosted","Windows","X64"]' || '["self-hosted","unmapped-runner"]') }}
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-node@v4
@@ -58,7 +58,7 @@ jobs:
   test_webview2:
     name: WebView2
     environment: ${{ github.event_name == 'push' && 'allow-uploading-flakiness-results' || null }}
-    runs-on: windows-2022
+    runs-on: ["self-hosted", "Windows", "X64"]
     permissions:
       id-token: write   # This is required for OIDC login (azure/login) to succeed
       contents: read    # This is required for actions/checkout to succeed
@@ -95,7 +95,7 @@ jobs:
       fail-fast: false
       matrix:
         clock: [frozen, realtime]
-    runs-on: ubuntu-22.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     steps:
     - uses: actions/checkout@v4
     - uses: ./.github/actions/run-test
@@ -113,7 +113,7 @@ jobs:
   test_clock_frozen_time_test_runner:
     name: time test runner - ${{ matrix.clock }}
     environment: ${{ github.event_name == 'push' && 'allow-uploading-flakiness-results' || null }}
-    runs-on: ubuntu-22.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     permissions:
       id-token: write   # This is required for OIDC login (azure/login) to succeed
       contents: read    # This is required for actions/checkout to succeed
@@ -144,7 +144,7 @@ jobs:
     permissions:
       id-token: write   # This is required for OIDC login (azure/login) to succeed
       contents: read    # This is required for actions/checkout to succeed
-    runs-on: ${{ matrix.os }}
+    runs-on: ${{ fromJSON(matrix.os == 'ubuntu-latest' && '["self-hosted","Linux","X64"]' || matrix.os == 'macos-latest' && '["self-hosted","macOS","ARM64"]' || matrix.os == 'windows-latest' && '["self-hosted","Windows","X64"]' || '["self-hosted","unmapped-runner"]') }}
     steps:
     - uses: actions/checkout@v4
     - name: Setup Ubuntu Binary Installation # TODO: Remove when https://github.com/electron/electron/issues/42510 is fixed

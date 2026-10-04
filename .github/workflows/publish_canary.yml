@@ -14,7 +14,7 @@ env:
 jobs:
   publish-canary:
     name: "publish canary NPM"
-    runs-on: ubuntu-24.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     if: github.repository == 'microsoft/playwright'
     permissions:
       id-token: write  # This is required for OIDC login (azure/login) to succeed
@@ -64,7 +64,7 @@ jobs:
 
   publish-trace-viewer:
     name: "publish Trace Viewer to trace.playwright.dev"
-    runs-on: ubuntu-24.04
+    runs-on: ["self-hosted", "Linux", "X64"]
     if: github.repository == 'microsoft/playwright'
     steps:
     - uses: actions/checkout@v4
